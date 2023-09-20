@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: servicebustest
+      namespace: servicebustestns
+      queue: servicebustestqueue
+  tasks:
+    - name: Create a policy with send and listen privilege
+      azure_rm_servicebussaspolicy:
+          name: "{{ queue }}-policy"
+          queue: "{{ queue }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+          rights: listen_send
+      register: policy
+    - debug:
+          var: policy
