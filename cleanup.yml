@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: servicebustest
+      namespace: servicebustestns
+      topic: servicebustesttopic
+      subscription: servicebustestsubs
+  tasks:
+    - name: Delete subscription
+      azure_rm_servicebustopicsubscription:
+          name: "{{ subscription }}"
+          topic: "{{ topic }}"
+          resource_group: "{{ resource_group }}"
+          namespace: "{{ namespace }}"
+          state: absent
+    - name: Delete topic
+      azure_rm_servicebustopic:
+          name: "{{ topic }}"
+          resource_group: "{{ resource_group }}"
+          namespace: "{{ namespace }}"
+          state: absent
+    - name: Delete namespace
+      azure_rm_servicebus:
+          name: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+          state: absent
+    - name: Delete resource group
+      azure_rm_resourcegroup:
+          name: "{{ resource_group }}"
+          state: absent
+          force_delete_nonempty: yes

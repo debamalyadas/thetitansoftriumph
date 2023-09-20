@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: servicebustest
+      namespace: servicebustestns
+      topic: servicebustesttopic
+  tasks:
+    - name: Get a topic's information
+      azure_rm_servicebus_facts:
+          type: topic
+          name: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+          show_sas_policies: yes
+      register: topic_fact
+    - name: "List subscriptions under topic {{ topic }}"
+      azure_rm_servicebus_facts:
+          type: subscription
+          topic: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: subs_fact
+    - debug:
+          var: "{{ item }}"
+      with_items:
+        - topic_fact.servicebuses[0]
+        - subs_fact.servicebuses

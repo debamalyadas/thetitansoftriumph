@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: servicebustest
+      namespace: servicebustestns
+  tasks:
+    - name: Get a namespace's information
+      azure_rm_servicebus_facts:
+          type: namespace
+          name: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+          show_sas_policies: yes
+      register: ns
+    - debug:
+          var: ns

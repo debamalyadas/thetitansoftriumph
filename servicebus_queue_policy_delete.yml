@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: servicebustest
+      namespace: servicebustestns
+      topic: servicebustesttopic
+  tasks:
+    - name: Delete a policy
+      azure_rm_servicebussaspolicy:
+          name: "{{ topic }}-policy"
+          topic: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+          state: absent
